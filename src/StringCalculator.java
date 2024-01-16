@@ -46,6 +46,9 @@ public class StringCalculator {
         String[] targetNumbers = target.split(delimiter);
         for (String number : targetNumbers) {
             try {
+                int num = getNumber(number);
+                if(!delimiter.equals("-") && num < 0)
+                    throw new RuntimeException("음수가 존재합니다.");
                 sum += getNumber(number);
             } catch (NumberFormatException e) {
                 throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
