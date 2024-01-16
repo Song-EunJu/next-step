@@ -9,7 +9,7 @@ public class StringCalculatorTest {
     private StringCalculator calculator;
 
     @Before
-    public void setup(){
+    public void setup() {
         calculator = new StringCalculator();
     }
 
@@ -37,23 +37,27 @@ public class StringCalculatorTest {
 
     @Test
     @DisplayName("커스텀 구분자로 구분된 숫자의 합을 반환한다.")
-    public void separatedByCustomDelimiter(){
+    public void separatedByCustomDelimiter() {
         assertEquals(6, calculator.add("//;\n1;2;3"));
     }
 
-    // TODO : 커스텀 구분자와 기본 구분자가 섞여있는 경우
-
     @Test
     @DisplayName("기본 구분자도 아니고, 커스텀 구분자도 아닌 구분자가 나온 경우 예외 처리한다.")
-    public void separatedByExceptionDelimiter(){
-        Assertions.assertThrows(RuntimeException.class, () ->
-            calculator.add("//#\n1;2#3")
+    public void separatedByExceptionDelimiter() {
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () ->
+                calculator.add("//#\n1;2#3")
         );
+        assertEquals("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.", exception.getMessage());
     }
 
-//    @Test
-//    @DisplayName("문자열에 음수가 있는 경우, 예외 처리한다.")
-//    public void checkNegativeValue(){
-//        assertEquals("음수는 존재할 수 없습니다", calculator.add("//#\\n1;2#3"));
-//    }
+    @Test
+    @DisplayName("문자열에 음수가 있는 경우, 예외 처리한다.")
+    public void checkNegativeValue() {
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () ->
+                calculator.add("//;\n1;-1;3")
+        );
+        assertEquals("음수가 존재합니다.", exception.getMessage());
+    }
+
+    // TODO : 커스텀 구분자와 기본 구분자가 섞여있는 경우
 }
