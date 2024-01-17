@@ -48,16 +48,46 @@ public class StringCalculatorTest {
                 calculator.add("//#\n1;2#3")
         );
         assertEquals("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.", exception.getMessage());
+
+        Exception exception2 = Assertions.assertThrows(RuntimeException.class, () ->
+                calculator.add("//;\n1-1;3")
+        );
+        assertEquals("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.", exception2.getMessage());
     }
 
     @Test
-    @DisplayName("문자열에 음수가 있는 경우, 예외 처리한다.")
+    @DisplayName("커스텀 구분자가 - 가 아닌 데, - 기호가 나온 경우, 문자열에 음수가 있으므로 예외 처리한다.")
     public void checkNegativeValue() {
         Exception exception = Assertions.assertThrows(RuntimeException.class, () ->
                 calculator.add("//;\n1;-1;3")
         );
         assertEquals("음수가 존재합니다.", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("기본 구분자이거나, 구분자가 없는데 - 가 나온 경우 예외 처리한다.")
+    public void checkNegativeValue2() {
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () ->
+                calculator.add("-1")
+        );
+        assertEquals("음수가 존재합니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("기본 구분자이거나, 구분자가 없는데 - 가 나온 경우 예외 처리한다.")
+    public void checkNegativeValue3() {
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () ->
+                calculator.add("//+\n-1+2-3")
+        );
+        assertEquals("음수가 존재합니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("커스텀 구분자가 - 가 나온다고 모두 음")
+    public void checkNegativeNumberWithCustomDelimiter() {
+        assertEquals(6, calculator.add("//-\n-1-2-3"));
+    }
+
 
     // TODO : 커스텀 구분자와 기본 구분자가 섞여있는 경우
 }
