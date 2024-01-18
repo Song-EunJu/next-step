@@ -16,11 +16,10 @@ public class StringCalculator {
 
         // 기본 구분자가 있는 경우
         if(hasDefaultDelimiter(target)) {
-            return sumSplitByDefaultDelimiter(DEFAULT_DELIMITER, target);
+            return sumSplitByDelimiter(DEFAULT_DELIMITER, target);
         }
 
-        // 구분자가 없는 경우
-        int num = target.isBlank() ? 0 : Integer.valueOf(target);
+        int num = getNumber(target);
         if(num < 0)
             throw new RuntimeException("음수가 존재합니다.");
         return num;
@@ -38,13 +37,12 @@ public class StringCalculator {
         return matcher.find();
     }
 
-    // 구분자가 없는 경우
     public int getNumber(String target) {
         return target.isBlank() ? 0 : Integer.valueOf(target);
     }
 
     // 특정 구분자로 계산하는 경우
-    public int sumSplitByDefaultDelimiter(String delimiter, String target) {
+    public int sumSplitByDelimiter(String delimiter, String target) {
         int sum = 0;
         String[] targetNumbers = target.split(delimiter);
         for (String number : targetNumbers) {
@@ -52,7 +50,7 @@ public class StringCalculator {
                 int num = getNumber(number);
                 if((!delimiter.equals("-") && num < 0) || num < 0)
                     throw new RuntimeException("음수가 존재합니다.");
-                sum += getNumber(number);
+                sum += num;
             } catch (NumberFormatException e) {
                 throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
             }
@@ -60,27 +58,19 @@ public class StringCalculator {
         return sum;
     }
 
-    // 커스텀 구분자로 계산하는 경우
     public int sumSplitByCustomDelimiter(String target) {
         String customDelimiter = getCustomDelimiter(target);
-        customDelimiter = customDelimiter.equals("+") ? "\\+" : customDelimiter;
         String targetStr = target.substring(target.indexOf("\n")+1);
-        return sumSplitByDefaultDelimiter(customDelimiter, targetStr);
+        return sumSplitByDelimiter(customDelimiter, targetStr);
     }
 
     // 커스텀 구분자 뽑아내기
     public String getCustomDelimiter(String target) {
         Matcher matcher = CUSTOM_DELIMITER_REGEX.matcher(target);
-
         String customDelimiter = "";
         while (matcher.find()) {
             customDelimiter = matcher.group(1);
         }
-        return customDelimiter;
-    }
-
-    // 커스텀 구분자 이후 문자열 반환
-    public String getTargetStrExceptCustomDelimiter(String target){
-        return target.substring(target.indexOf("\n")+1);
+        return customDelimiter.equals("+") ? "\\+" : customDelimiter;
     }
 }
