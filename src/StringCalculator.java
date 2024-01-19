@@ -36,8 +36,16 @@ public class StringCalculator {
         return matcher.find();
     }
 
+    // 구분자로 구분한 각 숫자 반환
     public int getNumber(String target) {
-        return target.isBlank() ? 0 : Integer.valueOf(target);
+        if(target.isBlank())
+            return 0;
+        try {
+            int num = Integer.valueOf(target);
+            return num;
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
+        }
     }
 
     // 음수 판별
