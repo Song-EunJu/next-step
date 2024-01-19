@@ -24,13 +24,13 @@ public class StringCalculator {
         return num;
     }
 
-    // 커스텀 구분자 패턴 존재 여부 판별 메서드
+    // 커스텀 구분자 패턴 존재 여부 판별
     public boolean hasCustomDelimiter(String target) {
         Matcher matcher = CUSTOM_DELIMITER_REGEX.matcher(target);
         return matcher.find();
     }
 
-    // 기본 구분자 존재 여부 판별 메서드
+    // 기본 구분자 존재 여부 판별
     public boolean hasDefaultDelimiter(String target) {
         Matcher matcher = DEFAULT_DELIMITER_REGEX.matcher(target);
         return matcher.find();
