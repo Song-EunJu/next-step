@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 public class StringCalculator {
 
     private static final String DEFAULT_DELIMITER = "[:,]";
-    private static final String CUSTOM_DELIMITER = "//(.*?)\n";
     private static final Pattern DEFAULT_DELIMITER_REGEX = Pattern.compile("[:,]");
     private static final Pattern CUSTOM_DELIMITER_REGEX = Pattern.compile("//(.*?)\n");
 
