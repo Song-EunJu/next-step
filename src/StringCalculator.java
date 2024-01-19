@@ -40,19 +40,20 @@ public class StringCalculator {
         return target.isBlank() ? 0 : Integer.valueOf(target);
     }
 
+    // 음수 판별
+    public void checkNegativeNumber(String delimiter, int num){
+        if ((!delimiter.equals("-") && num < 0) || num < 0)
+            throw new RuntimeException("음수가 존재합니다.");
+    }
+
     // 특정 구분자로 계산하는 경우
     public int sumSplitByDelimiter(String delimiter, String target) {
         int sum = 0;
         String[] targetNumbers = target.split(delimiter);
         for (String number : targetNumbers) {
-            try {
-                int num = getNumber(number);
-                if((!delimiter.equals("-") && num < 0) || num < 0)
-                    throw new RuntimeException("음수가 존재합니다.");
-                sum += num;
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
-            }
+            int num = getNumber(number);
+            checkNegativeNumber(delimiter, num);
+            sum += num;
         }
         return sum;
     }
