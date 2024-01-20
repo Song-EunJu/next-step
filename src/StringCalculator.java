@@ -91,4 +91,8 @@ public class StringCalculator {
         }
         return customDelimiters;
     }
+
+    public String handlePlusEscape(String matchDelimiter) {
+        return matchDelimiter.equals("+") ? "\\+" : matchDelimiter;
+    }
 }
