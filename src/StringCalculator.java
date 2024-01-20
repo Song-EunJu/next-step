@@ -67,19 +67,28 @@ public class StringCalculator {
         return sum;
     }
 
-    public int sumSplitByCustomDelimiter(String target) {
-        String customDelimiter = getCustomDelimiter(target);
-        String targetStr = target.substring(target.indexOf("\n")+1);
-        return sumSplitByDelimiter(customDelimiter, targetStr);
+    // 커스텀 구분자 정규식 생성
+    public String getCustomDelimiterRegex(List<String> delimiters) {
+        String customDelimiters = String.join("|", delimiters);
+        return "[" + customDelimiters + "]";
     }
 
-    // 커스텀 구분자 뽑아내기
-    public String getCustomDelimiter(String target) {
-        Matcher matcher = CUSTOM_DELIMITER_REGEX.matcher(target);
-        String customDelimiter = "";
+    // 커스텀 구분자 기준으로 나누어 합 반환
+    public int sumSplitByCustomDelimiter(String target) {
+        List<String> customDelimiters = getCustomDelimiters(target);
+        String customDelimiterRegex = getCustomDelimiterRegex(customDelimiters);
+        String targetStr = target.substring(target.lastIndexOf("\n")+1);
+        return sumSplitByDelimiter(customDelimiterRegex, targetStr);
+    }
+
+    // 커스텀 구분자 목록 반환
+    public List<String> getCustomDelimiters(String target) {
+        Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(target);
+        List<String> customDelimiters = new ArrayList<>();
         while (matcher.find()) {
-            customDelimiter = matcher.group(1);
+            String matchDelimiter = handlePlusEscape(matcher.group(1));
+            customDelimiters.add(matchDelimiter);
         }
-        return customDelimiter.equals("+") ? "\\+" : customDelimiter;
+        return customDelimiters;
     }
 }
