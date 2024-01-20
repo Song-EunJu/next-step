@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,25 +17,23 @@ public class StringCalculator {
 
         // 기본 구분자가 존재하는 경우
         if(hasDefaultDelimiter(target)) {
-            return sumSplitByDelimiter(DEFAULT_DELIMITER, target);
+            return sumSplitByDelimiter(DEFAULT_DELIMITER_REGEX, target);
         }
 
         // 커스텀 구분자, 기본 구분자 모두 존재하지 않는 경우
         int num = getNumber(target);
-        if(num < 0)
-            throw new RuntimeException("음수가 존재합니다.");
         return num;
     }
 
     // 커스텀 구분자 패턴 존재 여부 판별
     public boolean hasCustomDelimiter(String target) {
-        Matcher matcher = CUSTOM_DELIMITER_REGEX.matcher(target);
+        Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(target);
         return matcher.find();
     }
 
     // 기본 구분자 존재 여부 판별
     public boolean hasDefaultDelimiter(String target) {
-        Matcher matcher = DEFAULT_DELIMITER_REGEX.matcher(target);
+        Matcher matcher = DEFAULT_DELIMITER_PATTERN.matcher(target);
         return matcher.find();
     }
 
@@ -41,6 +41,7 @@ public class StringCalculator {
     public int getNumber(String target) {
         if(target.isBlank())
             return 0;
+
         try {
             int num = Integer.valueOf(target);
             handleNegativeValue(num);
@@ -61,7 +62,6 @@ public class StringCalculator {
         String[] targetNumbers = target.split(delimiter);
         for (String number : targetNumbers) {
             int num = getNumber(number);
-            checkNegativeNumber(delimiter, num);
             sum += num;
         }
         return sum;
