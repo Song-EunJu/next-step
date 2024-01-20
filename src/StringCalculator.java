@@ -43,15 +43,15 @@ public class StringCalculator {
             return 0;
         try {
             int num = Integer.valueOf(target);
+            handleNegativeValue(num);
             return num;
         } catch (NumberFormatException e) {
             throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
         }
     }
 
-    // 음수 판별
-    public void checkNegativeNumber(String delimiter, int num){
-        if ((!delimiter.equals("-") && num < 0) || num < 0)
+    public void handleNegativeValue(int num){
+        if (num < 0)
             throw new RuntimeException("음수가 존재합니다.");
     }
 
