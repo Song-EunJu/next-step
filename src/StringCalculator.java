@@ -3,21 +3,22 @@ import java.util.regex.Pattern;
 
 public class StringCalculator {
 
-    private static final String DEFAULT_DELIMITER = "[:,]";
-    private static final Pattern DEFAULT_DELIMITER_REGEX = Pattern.compile("[:,]");
-    private static final Pattern CUSTOM_DELIMITER_REGEX = Pattern.compile("//(.*?)\n");
+    private static final String DEFAULT_DELIMITER_REGEX = "[:,]";
+    private static final Pattern DEFAULT_DELIMITER_PATTERN = Pattern.compile(DEFAULT_DELIMITER_REGEX);
+    private static final Pattern CUSTOM_DELIMITER_PATTERN = Pattern.compile("//(.*?)\n");
 
     public int add(String target) {
-        // 커스텀 구분자가 있는 경우
+        // 커스텀 구분자가 존재하는 경우
         if(hasCustomDelimiter(target)) {
             return sumSplitByCustomDelimiter(target);
         }
 
-        // 기본 구분자가 있는 경우
+        // 기본 구분자가 존재하는 경우
         if(hasDefaultDelimiter(target)) {
             return sumSplitByDelimiter(DEFAULT_DELIMITER, target);
         }
 
+        // 커스텀 구분자, 기본 구분자 모두 존재하지 않는 경우
         int num = getNumber(target);
         if(num < 0)
             throw new RuntimeException("음수가 존재합니다.");
