@@ -9,19 +9,22 @@ public class StringCalculator {
     private static final Pattern CUSTOM_DELIMITER_PATTERN = Pattern.compile("//(.*?)\n");
 
     public int add(String target) {
-        // 커스텀 구분자가 존재하는 경우
+        if(isBlank(target))
+            return 0;
+
+        return sum(split(target));
+    }
+
+    private String[] split(String target){
         if(hasCustomDelimiter(target)) {
-            return sumSplitByCustomDelimiter(target);
+            return splitByCustomDelimiter(target);
         }
 
-        // 기본 구분자가 존재하는 경우
-        if(hasDefaultDelimiter(target)) {
-            return sumSplitByDelimiter(DEFAULT_DELIMITER_REGEX, target);
-        }
+        return target.split(DEFAULT_DELIMITER_REGEX);
+    }
 
-        // 커스텀 구분자, 기본 구분자 모두 존재하지 않는 경우
-        int num = getNumber(target);
-        return num;
+    private boolean isBlank(String target) {
+        return target == null || target.isBlank();
     }
 
     // 커스텀 구분자 패턴 존재 여부 판별
