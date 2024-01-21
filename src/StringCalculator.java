@@ -34,13 +34,14 @@ public class StringCalculator {
     }
 
     // 구분자로 구분한 각 숫자 반환
-    public int getNumber(String target) {
-        if(target.isBlank())
+    public int getPositiveNumber(String target) {
+        if(isBlank(target))
             return 0;
 
         try {
-            int num = Integer.valueOf(target);
-            handleNegativeValue(num);
+            int num = Integer.parseInt(target);
+            if (num < 0)
+                throw new RuntimeException("음수가 존재합니다.");
             return num;
         } catch (NumberFormatException e) {
             throw new RuntimeException("기본 구분자도, 커스텀 구분자도 아닌 구분자가 존재합니다.");
@@ -50,9 +51,8 @@ public class StringCalculator {
     // 합을 계산하여 반환
     public int sum(String[] targetNumbers) {
         int sum = 0;
-        String[] targetNumbers = target.split(delimiter);
         for (String number : targetNumbers) {
-            int num = getNumber(number);
+            int num = getPositiveNumber(number);
             sum += num;
         }
         return sum;
