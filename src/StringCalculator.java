@@ -58,18 +58,11 @@ public class StringCalculator {
         return sum;
     }
 
-    // 커스텀 구분자 정규식 생성
-    public String getCustomDelimiterRegex(List<String> delimiters) {
-        String customDelimiters = String.join("|", delimiters);
-        return "[" + customDelimiters + "]";
-    }
-
-    // 커스텀 구분자 기준으로 나누어 합 반환
-    public int sumSplitByCustomDelimiter(String target) {
-        List<String> customDelimiters = getCustomDelimiters(target);
-        String customDelimiterRegex = getCustomDelimiterRegex(customDelimiters);
+    // 커스텀 구분자 기준으로 문자열 분할
+    public String[] splitByCustomDelimiter(String target) {
+        String customDelimiterRegex = getCustomDelimiterRegex(getCustomDelimiters(target));
         String targetStr = target.substring(target.lastIndexOf("\n")+1);
-        return sumSplitByDelimiter(customDelimiterRegex, targetStr);
+        return targetStr.split(customDelimiterRegex);
     }
 
     // 커스텀 구분자 목록 반환
@@ -81,6 +74,12 @@ public class StringCalculator {
             customDelimiters.add(matchDelimiter);
         }
         return customDelimiters;
+    }
+
+    // 커스텀 구분자 정규식 생성
+    public String getCustomDelimiterRegex(List<String> delimiters) {
+        String customDelimiters = String.join("|", delimiters);
+        return "[" + customDelimiters + "]";
     }
 
     public String handlePlusEscape(String matchDelimiter) {
